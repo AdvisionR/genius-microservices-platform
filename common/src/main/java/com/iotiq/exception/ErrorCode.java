@@ -5,7 +5,9 @@ import lombok.Getter;
 @Getter
 public enum ErrorCode {
     USER_ALREADY_EXISTS(1000, "USER_ALREADY_EXISTS"),
-    PASSWORD_NOT_MATCH(1001, "PASSWORD_NOT_MATCH");
+    PASSWORD_NOT_MATCH(1001, "PASSWORD_NOT_MATCH"),
+    USER_NOT_FOUND(1002, "USER_NOT_FOUND"),
+    INVALID_CREDENTIALS(1003, "INVALID_CREDENTIALS");
 
     private final int code;
     private final String messagePrefix;
