@@ -63,6 +63,19 @@ The services are built using **Spring Boot**, **Spring Cloud**, **OpenFeign**, a
 
 ---
 
+## 🏃‍♂️ Running the Application with Maven
+
+Since this project is organized as a **Maven multi-module monorepo**, you can run each microservice independently from its own module directory or use the Maven wrapper from the root.
+
+### Running a Single Microservice
+
+Navigate to the microservice folder, for example `auth-service`:
+
+```bash
+cd auth-service
+./mvnw spring-boot:run
+```
+
 ## 🧪 Testing
 
 All services are tested using:
