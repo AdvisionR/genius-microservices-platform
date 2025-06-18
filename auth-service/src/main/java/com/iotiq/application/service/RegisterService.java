@@ -7,7 +7,6 @@ import com.iotiq.api.dto.RegisterResponseDTO;
 import com.iotiq.application.mapper.AuthMapper;
 import com.iotiq.application.usecase.RegisterUseCase;
 import com.iotiq.application.validator.RegisterValidator;
-import com.iotiq.domain.exception.PasswordNotMatchException;
 import com.iotiq.domain.model.Auth;
 import com.iotiq.domain.repository.AuthRepository;
 import com.iotiq.dto.UserProfileResponseDTO;

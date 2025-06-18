@@ -1,6 +1,5 @@
 package com.iotiq.unit.api.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.iotiq.api.controller.AuthController;
 import com.iotiq.api.dto.LoginRequestDTO;
@@ -9,7 +8,6 @@ import com.iotiq.api.dto.RegisterRequestDTO;
 import com.iotiq.api.dto.RegisterResponseDTO;
 import com.iotiq.application.usecase.LoginUseCase;
 import com.iotiq.application.usecase.RegisterUseCase;
-import lombok.extern.java.Log;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;

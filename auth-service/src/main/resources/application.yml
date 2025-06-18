@@ -1,20 +1,5 @@
-server:
-  port: 9090
 spring:
+  config:
+    import: "configserver:http://localhost:8888"
   application:
-    name: auth-service
-  datasource:
-    driver-class-name: org.postgresql.Driver
-    username: postgres
-    password: postgres
-    url: jdbc:postgresql://localhost:5432/auth
-  jpa:
-    hibernate:
-      ddl-auto: update
-service:
-  user:
-    url: http://localhost:9091/dev/v1/user
-jwt:
-  secret-key: genius-microservices-platform-jwt-secret-key-256-bit
-  access-token-expiration-ms: 600000
-  refresh-token-expiration-ms: 604800000
+    name: auth-application

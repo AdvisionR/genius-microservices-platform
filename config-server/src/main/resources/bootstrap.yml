@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: genius-microservices-platform-config-server
+  profiles:
+    active: dev

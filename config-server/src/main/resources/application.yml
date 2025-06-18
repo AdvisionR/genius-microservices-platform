@@ -1,0 +1,15 @@
+server:
+  port: 8888
+
+spring:
+  application:
+    name: genius-microservices-platform-config-server
+  cloud:
+    config:
+      server:
+        git:
+          uri: "https://github.com/suatbayir1/genius-microservices-platform-config-server.git"
+          default-label: "main"
+          skip-ssl-validation: true
+          username: "suatbayir1"
+          password: ${GIT_KEY}
