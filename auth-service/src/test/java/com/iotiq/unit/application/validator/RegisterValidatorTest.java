@@ -43,13 +43,13 @@ public class RegisterValidatorTest {
                 "email@example.com"
         );
 
-        when(authRepository.existsByEmail(dto.email())).thenReturn(true);
-        when(authRepository.existsByUserName(dto.userName())).thenReturn(false);
+        when(authRepository.existsByEmail(dto.getEmail())).thenReturn(true);
+        when(authRepository.existsByUserName(dto.getUserName())).thenReturn(false);
 
         assertThrows(UserAlreadyExistsException.class, () -> registerValidator.validate(dto));
 
-        when(authRepository.existsByUserName(dto.userName())).thenReturn(true);
-        when(authRepository.existsByEmail(dto.email())).thenReturn(false);
+        when(authRepository.existsByUserName(dto.getUserName())).thenReturn(true);
+        when(authRepository.existsByEmail(dto.getEmail())).thenReturn(false);
 
         assertThrows(UserAlreadyExistsException.class, () -> registerValidator.validate(dto));
     }

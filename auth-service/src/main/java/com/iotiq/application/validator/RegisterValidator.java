@@ -13,10 +13,10 @@ public class RegisterValidator {
     private final AuthRepository authRepository;
 
     public void validate(RegisterRequestDTO dto) {
-        if (!dto.password().equals(dto.rePassword()))
+        if (!dto.getPassword().equals(dto.getRePassword()))
             throw new PasswordNotMatchException();
 
-        if (authRepository.existsByEmail(dto.email()) || authRepository.existsByUserName(dto.userName()))
-            throw new UserAlreadyExistsException(dto.email(), dto.userName());
+        if (authRepository.existsByEmail(dto.getEmail()) || authRepository.existsByUserName(dto.getUserName()))
+            throw new UserAlreadyExistsException(dto.getEmail(), dto.getUserName());
     }
 }

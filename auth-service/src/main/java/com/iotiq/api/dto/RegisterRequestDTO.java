@@ -2,10 +2,25 @@ package com.iotiq.api.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-public record RegisterRequestDTO(
-    @NotBlank String userName,
-    @NotBlank String password,
-    @NotBlank String rePassword,
-    @NotBlank @Email String email
-) {}
+@Builder
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class RegisterRequestDTO {
+    @NotBlank
+    private String userName;
+
+    @NotBlank
+    private String password;
+
+    @NotBlank
+    private String rePassword;
+
+    @NotBlank @Email
+    private String email;
+}

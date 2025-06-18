@@ -34,7 +34,7 @@ public class RegisterService implements RegisterUseCase {
         registerValidator.validate(dto);
 
         Auth auth = authMapper.toEntity(dto);
-        auth.setPassword(passwordEncoder.encode(dto.password()));
+        auth.setPassword(passwordEncoder.encode(dto.getPassword()));
         auth = authRepository.save(auth);
 
         try {
