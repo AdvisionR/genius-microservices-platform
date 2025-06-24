@@ -5,6 +5,8 @@ import com.iotiq.domain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 @RequiredArgsConstructor
 public class UserRepositoryImpl implements UserRepository {
@@ -23,5 +25,10 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public Boolean existsByUserName(String userName) {
         return jpaUserRepository.existsByUserName(userName);
+    }
+
+    @Override
+    public Optional<UserProfile> findByUserName(String userName) {
+        return jpaUserRepository.findByUserName(userName);
     }
 }
