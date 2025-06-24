@@ -5,9 +5,10 @@ import com.iotiq.api.dto.LoginResponseDTO;
 import com.iotiq.application.service.LoginService;
 import com.iotiq.domain.model.Auth;
 import com.iotiq.domain.repository.AuthRepository;
+import com.iotiq.enums.UserRole;
 import com.iotiq.exception.InvalidCredentialsException;
 import com.iotiq.exception.UserNotFoundException;
-import com.iotiq.infrastructure.security.jwt.JwtService;
+import com.iotiq.security.jwt.JwtService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -46,6 +47,7 @@ public class LoginServiceTest {
                 .userName("testUser")
                 .email("test@example.com")
                 .password("hashedPassword")
+                .role(UserRole.USER)
                 .build();
 
         when(authRepository.findByUserName("testUser")).thenReturn(Optional.of(auth));

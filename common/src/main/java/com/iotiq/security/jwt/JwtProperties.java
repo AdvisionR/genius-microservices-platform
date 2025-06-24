@@ -1,4 +1,4 @@
-package com.iotiq.infrastructure.security.jwt;
+package com.iotiq.security.jwt;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 

@@ -10,6 +10,7 @@ import com.iotiq.application.validator.RegisterValidator;
 import com.iotiq.domain.model.Auth;
 import com.iotiq.domain.repository.AuthRepository;
 import com.iotiq.dto.UserProfileResponseDTO;
+import com.iotiq.enums.UserRole;
 import com.iotiq.exception.UserAlreadyExistsException;
 import com.iotiq.infrastructure.client.UserClient;
 import feign.FeignException;
@@ -35,6 +36,7 @@ public class RegisterService implements RegisterUseCase {
 
         Auth auth = authMapper.toEntity(dto);
         auth.setPassword(passwordEncoder.encode(dto.getPassword()));
+        auth.setRole(UserRole.USER);
         auth = authRepository.save(auth);
 
         try {

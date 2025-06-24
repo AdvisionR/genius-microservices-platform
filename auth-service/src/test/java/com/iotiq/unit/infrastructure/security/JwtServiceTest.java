@@ -1,10 +1,9 @@
 package com.iotiq.unit.infrastructure.security;
 
-import com.iotiq.infrastructure.security.jwt.JwtProperties;
-import com.iotiq.infrastructure.security.jwt.JwtService;
+import com.iotiq.security.jwt.JwtProperties;
+import com.iotiq.security.jwt.JwtService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 
 import java.util.Map;
 

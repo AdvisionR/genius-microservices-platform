@@ -7,7 +7,7 @@ import com.iotiq.domain.model.Auth;
 import com.iotiq.domain.repository.AuthRepository;
 import com.iotiq.exception.InvalidCredentialsException;
 import com.iotiq.exception.UserNotFoundException;
-import com.iotiq.infrastructure.security.jwt.JwtService;
+import com.iotiq.security.jwt.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -32,7 +32,10 @@ public class LoginService implements LoginUseCase {
 
         String accessToken = jwtService.generateAccessToken(
                 auth.getUserName(),
-                Map.of("email", auth.getEmail())
+                Map.of(
+                    "email", auth.getEmail(),
+                    "role", auth.getRole().name()
+                )
         );
         String refreshToken = jwtService.generateRefreshToken(auth.getUserName());
 

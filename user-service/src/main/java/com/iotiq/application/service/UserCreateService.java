@@ -18,7 +18,7 @@ public class UserCreateService implements UserCreateUseCase {
 
     @Override
     public UserProfileResponseDTO createUser(CreateUserRequestDTO dto) {
-        if (userRepository.existsByUserName(dto.email()) || userRepository.existsByEmail(dto.email())) {
+        if (userRepository.existsByUserName(dto.userName()) || userRepository.existsByEmail(dto.email())) {
             throw new UserAlreadyExistsException(dto.email(), dto.userName());
         }
 

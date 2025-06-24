@@ -10,6 +10,8 @@ public class RestApis {
 
     public static final String REGISTER = "/register";
     public static final String LOGIN = "/login";
+    public static final String ME = "/me";
 
     public static final String CREATE_USER = "/create-user";
+    public static final String GET_USER = "/get-user";
 }

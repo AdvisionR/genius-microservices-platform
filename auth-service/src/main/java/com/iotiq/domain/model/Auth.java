@@ -1,5 +1,6 @@
 package com.iotiq.domain.model;
 
+import com.iotiq.enums.UserRole;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
@@ -31,6 +32,10 @@ public class Auth {
     @Email
     @Column(nullable = false, unique = true)
     private String email;
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private UserRole role;
 
     @Column(nullable = false)
     private Boolean isActive;

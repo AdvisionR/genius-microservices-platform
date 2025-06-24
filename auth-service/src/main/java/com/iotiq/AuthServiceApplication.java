@@ -1,6 +1,6 @@
 package com.iotiq;
 
-import com.iotiq.infrastructure.security.jwt.JwtProperties;
+import com.iotiq.security.jwt.JwtProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;

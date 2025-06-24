@@ -7,7 +7,9 @@ import com.iotiq.api.dto.LoginResponseDTO;
 import com.iotiq.api.dto.RegisterRequestDTO;
 import com.iotiq.api.dto.RegisterResponseDTO;
 import com.iotiq.application.usecase.LoginUseCase;
+import com.iotiq.application.usecase.MeUseCase;
 import com.iotiq.application.usecase.RegisterUseCase;
+import com.iotiq.enums.UserRole;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -35,6 +37,9 @@ public class AuthControllerTest {
     @MockitoBean
     private RegisterUseCase registerUseCase;
 
+    @MockitoBean
+    private MeUseCase meUseCase;
+
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Test
@@ -42,7 +47,7 @@ public class AuthControllerTest {
         UUID uuid = UUID.randomUUID();
 
         RegisterRequestDTO request = new RegisterRequestDTO("john_doe","StrongPass123!","StrongPass123!","john@example.com");
-        RegisterResponseDTO response = new RegisterResponseDTO(uuid, "john_doe", "john@example.com");
+        RegisterResponseDTO response = new RegisterResponseDTO(uuid, "john_doe", "john@example.com", UserRole.USER);
 
         when(registerUseCase.register(any())).thenReturn(response);
 

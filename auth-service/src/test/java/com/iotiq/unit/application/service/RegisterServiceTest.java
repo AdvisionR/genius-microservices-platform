@@ -63,7 +63,8 @@ public class RegisterServiceTest {
         RegisterResponseDTO responseDTO = new RegisterResponseDTO(
                 auth.getUuid(),
                 auth.getUserName(),
-                auth.getEmail()
+                auth.getEmail(),
+                auth.getRole()
         );
 
         doNothing().when(registerValidator).validate(requestDTO);
@@ -77,7 +78,7 @@ public class RegisterServiceTest {
         RegisterResponseDTO response = registerService.register(requestDTO);
 
         assertNotNull(response);
-        assertEquals(responseDTO.uuid(), response.uuid());
+        assertEquals(responseDTO.getUuid(), response.getUuid());
         verify(registerValidator).validate(requestDTO);
         verify(authRepository).save(any(Auth.class));
         verify(userClient).createUser(any(CreateUserRequestDTO.class));
