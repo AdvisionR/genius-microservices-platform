@@ -10,6 +10,8 @@ import com.iotiq.exception.UserAlreadyExistsException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 @RequiredArgsConstructor
 public class UserCreateService implements UserCreateUseCase {
@@ -29,6 +31,14 @@ public class UserCreateService implements UserCreateUseCase {
                 .build();
 
         user = userRepository.save(user);
-        return userMapper.toResponseDto(user);
+        return UserProfileResponseDTO.builder()
+                .uuid(user.getUuid())
+                .authUuid(user.getAuthUuid())
+                .userName(user.getUserName())
+                .email(user.getEmail())
+                .name(user.getName())
+                .phone(user.getPhone())
+                .avatar(user.getAvatar())
+                .build();
     }
 }

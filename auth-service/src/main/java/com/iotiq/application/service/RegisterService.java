@@ -26,7 +26,6 @@ public class RegisterService implements RegisterUseCase {
     private final AuthRepository authRepository;
     private final UserClient userClient;
     private final PasswordEncoder passwordEncoder;
-    private final AuthMapper authMapper;
     private final RegisterValidator registerValidator;
 
     @Override
@@ -34,9 +33,14 @@ public class RegisterService implements RegisterUseCase {
     public RegisterResponseDTO register(RegisterRequestDTO dto) {
         registerValidator.validate(dto);
 
-        Auth auth = authMapper.toEntity(dto);
-        auth.setPassword(passwordEncoder.encode(dto.getPassword()));
-        auth.setRole(UserRole.USER);
+        Auth auth = Auth.builder()
+                .userName(dto.getUserName())
+                .email(dto.getEmail())
+                .password(passwordEncoder.encode(dto.getPassword()))
+                .role(UserRole.USER)
+                .isActive(false)
+                .build();
+
         auth = authRepository.save(auth);
 
         try {
@@ -51,6 +55,10 @@ public class RegisterService implements RegisterUseCase {
             throw new RuntimeException("User microservice error: " + exception.getMessage(), exception);
         }
 
-        return authMapper.toResponseDto(auth);
+        return RegisterResponseDTO.builder()
+                .uuid(auth.getUuid())
+                .email(auth.getEmail())
+                .userName(auth.getUserName())
+                .build();
     }
 }
