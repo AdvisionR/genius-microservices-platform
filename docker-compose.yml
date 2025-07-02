@@ -1,0 +1,80 @@
+services:
+  config-server:
+    container_name: config-server
+    build:
+      context: .
+      dockerfile: config-server/Dockerfile
+    ports:
+      - "8888:8888"
+    environment:
+      - SPRING_PROFILES_ACTIVE=default
+      - GIT_KEY=${GIT_KEY}
+    networks:
+      - genius-net
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8888/actuator/health" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  auth-service:
+    container_name: auth-service
+    build:
+      context: .
+      dockerfile: auth-service/Dockerfile
+    depends_on:
+      config-server:
+        condition: service_healthy
+      postgres-auth:
+        condition: service_started
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+    ports:
+      - "9090:9090"
+    networks:
+      - genius-net
+
+  user-service:
+    container_name: user-service
+    build:
+      context: .
+      dockerfile: user-service/Dockerfile
+    depends_on:
+      config-server:
+        condition: service_healthy
+      postgres-user:
+        condition: service_started
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+    ports:
+      - "9091:9091"
+    networks:
+      - genius-net
+
+  postgres-auth:
+    image: postgres:16-alpine
+    container_name: postgres-auth
+    environment:
+      POSTGRES_DB: auth
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "15432:5432"
+    networks:
+      - genius-net
+
+  postgres-user:
+    image: postgres:16-alpine
+    container_name: postgres-user
+    environment:
+      POSTGRES_DB: user
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "15433:5432"
+    networks:
+      - genius-net
+
+networks:
+  genius-net:
+    driver: bridge
