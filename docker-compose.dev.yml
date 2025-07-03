@@ -1,14 +1,9 @@
 services:
   auth-service:
-    container_name: auth-service
     build:
       context: .
       dockerfile: auth-service/Dockerfile
-    depends_on:
-      config-server:
-        condition: service_healthy
-      postgres-auth:
-        condition: service_started
+      target: dev
     environment:
       - SPRING_PROFILES_ACTIVE=dev
     ports:
@@ -20,19 +15,12 @@ services:
       ./mvnw spring-boot:run
       -Dspring-boot.run.profiles=dev
       -Dspring-boot.run.jvmArguments="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005"
-    networks:
-      - genius-net
 
   user-service:
-    container_name: user-service
     build:
       context: .
       dockerfile: user-service/Dockerfile
-    depends_on:
-      config-server:
-        condition: service_healthy
-      postgres-user:
-        condition: service_started
+      target: dev
     environment:
       - SPRING_PROFILES_ACTIVE=dev
     ports:
@@ -44,21 +32,4 @@ services:
       ./mvnw spring-boot:run
       -Dspring-boot.run.profiles=dev
       -Dspring-boot.run.jvmArguments="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5006"
-    networks:
-      - genius-net
 
-  config-server:
-    container_name: config-server
-    build:
-      context: .
-      dockerfile: config-server/Dockerfile
-    environment:
-      - SPRING_PROFILES_ACTIVE=dev
-    ports:
-      - "8888:8888"
-    volumes:
-      - ./config-server:/app/config-server
-    command: >
-      ./mvnw spring-boot:run -Dspring-boot.run.profiles=dev
-    networks:
-      - genius-net
