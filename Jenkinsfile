@@ -10,14 +10,15 @@ pipeline {
         stage('Checkout') {
             steps {
                 checkout scm
-                sh "cp .env.example .env"
             }
         }
 
         stage('Build & Test') {
             steps {
                 script {
-                    sh 'mvn clean verify -DskipTests=false'
+                    docker.image('maven:3.9.9-eclipse-temurin-21-alpine').inside {
+                        sh 'mvn clean verify -DskipTests=false'
+                    }
                 }
             }
         }
