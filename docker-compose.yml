@@ -60,6 +60,8 @@ services:
       POSTGRES_PASSWORD: postgres
     ports:
       - "15432:5432"
+    volumes:
+      - postgres-auth-data:/var/lib/postgresql/data
     networks:
       - genius-net
 
@@ -72,9 +74,15 @@ services:
       POSTGRES_PASSWORD: postgres
     ports:
       - "15433:5432"
+    volumes:
+      - postgres-user-data:/var/lib/postgresql/data
     networks:
       - genius-net
 
 networks:
   genius-net:
     driver: bridge
+
+volumes:
+  postgres-auth-data:
+  postgres-user-data:
