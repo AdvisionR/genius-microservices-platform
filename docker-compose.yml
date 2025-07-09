@@ -127,7 +127,7 @@ services:
     container_name: otel-collector
     command: ["--config=/etc/otel-collector-config.yml"]
     volumes:
-      - ./otel-collector-config.yml:/etc/otel-collector-config.yml
+      - /opt/otel-collector-config.yml:/etc/otel-collector-config.yml
     ports:
       - "4317:4317"
       - "4318:4318"
