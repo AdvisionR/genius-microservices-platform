@@ -92,7 +92,6 @@ pipeline {
                         DEBUG_USER_PORT=5006
                     """
                     sh '''
-                        cd "$WORKSPACE"
                         docker compose down
                         docker compose pull
                         docker compose up --build -d

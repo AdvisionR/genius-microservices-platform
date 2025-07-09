@@ -95,15 +95,7 @@ services:
     container_name: prometheus
     image: prom/prometheus
     volumes:
-      - ./prometheus:/etc/prometheus
-      - prometheus_data:/prometheus
-    command:
-      - '--config.file=/etc/prometheus/prometheus.yml'
-      - '--storage.agent.path=/prometheus'
-      - '--web.console.libraries=/etc/prometheus/console_libraries'
-      - '--web.console.templates=/etc/prometheus/consoles'
-      - '--web.enable-lifecycle'
-      - '--enable-feature=agent'
+      - /opt/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
     ports:
       - "9092:9090"
     networks:
@@ -150,4 +142,3 @@ volumes:
   postgres-auth-data:
   postgres-user-data:
   grafana-data:
-  prometheus_data:
