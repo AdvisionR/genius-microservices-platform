@@ -9,5 +9,6 @@ FROM amazoncorretto:21-alpine
 WORKDIR /app
 RUN apk add --no-cache curl
 COPY --from=build /app/config-server/target/config-server-*.jar app.jar
+COPY ../../opentelemetry-javaagent.jar /app/opentelemetry-javaagent.jar
 EXPOSE 8888
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-javaagent:/app/opentelemetry-javaagent.jar", "-Dotel.exporter.otlp.endpoint=http://otel-collector:4317", "-Dotel.resource.attributes=service.name=config-server", "-jar", "app.jar"]

@@ -9,6 +9,10 @@ services:
     environment:
       - SPRING_PROFILES_ACTIVE=default
       - GIT_KEY=${GIT_KEY}
+      - JAVA_TOOL_OPTIONS=-javaagent:/app/opentelemetry-javaagent.jar
+        -Dotel.exporter.otlp.endpoint=otel-collector:4317
+        -Dotel.exporter.otlp.protocol=grpc
+        -Dotel.resource.attributes=service.name=config-server
     networks:
       - genius-net
     healthcheck:
@@ -29,6 +33,10 @@ services:
         condition: service_started
     environment:
       - SPRING_PROFILES_ACTIVE=prod
+      - JAVA_TOOL_OPTIONS=-javaagent:/app/opentelemetry-javaagent.jar
+        -Dotel.exporter.otlp.endpoint=otel-collector:4317
+        -Dotel.exporter.otlp.protocol=grpc
+        -Dotel.resource.attributes=service.name=auth-service
     ports:
       - "9090:9090"
     networks:
@@ -46,6 +54,10 @@ services:
         condition: service_started
     environment:
       - SPRING_PROFILES_ACTIVE=prod
+      - JAVA_TOOL_OPTIONS=-javaagent:/app/opentelemetry-javaagent.jar
+        -Dotel.exporter.otlp.endpoint=otel-collector:4317
+        -Dotel.exporter.otlp.protocol=grpc
+        -Dotel.resource.attributes=service.name=user-service
     ports:
       - "9091:9091"
     networks:
@@ -79,6 +91,49 @@ services:
     networks:
       - genius-net
 
+  prometheus:
+    container_name: prometheus
+    image: prom/prometheus
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9092:9090"
+    networks:
+      - genius-net
+
+  grafana:
+    container_name: grafana
+    image: grafana/grafana
+    ports:
+      - "3001:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    networks:
+      - genius-net
+    volumes:
+      - grafana-data:/var/lib/grafana
+
+  jaeger:
+    image: jaegertracing/all-in-one:1.57
+    container_name: jaeger
+    ports:
+      - "16686:16686"
+      - "14250:14250"
+    networks:
+      - genius-net
+
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib:0.101.0
+    container_name: otel-collector
+    command: ["--config=/etc/otel-collector-config.yml"]
+    volumes:
+      - ./otel-collector-config.yml:/etc/otel-collector-config.yml
+    ports:
+      - "4317:4317"
+      - "4318:4318"
+    networks:
+      - genius-net
+
 networks:
   genius-net:
     driver: bridge
@@ -86,3 +141,4 @@ networks:
 volumes:
   postgres-auth-data:
   postgres-user-data:
+  grafana-data:

@@ -26,6 +26,7 @@ ENTRYPOINT ["sh", "-c", "java $JVM_OPTS -jar app.jar"]
 FROM amazoncorretto:21-alpine AS prod
 WORKDIR /app
 COPY --from=build /app/user-service/target/user-service-*.jar app.jar
+COPY ../../opentelemetry-javaagent.jar /app/opentelemetry-javaagent.jar
 EXPOSE 9091
 ENV SPRING_PROFILES_ACTIVE=prod
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-javaagent:/app/opentelemetry-javaagent.jar", "-Dotel.exporter.otlp.endpoint=http://otel-collector:4317", "-Dotel.resource.attributes=service.name=user-service", "-jar", "app.jar"]
