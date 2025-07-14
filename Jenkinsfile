@@ -53,6 +53,24 @@ pipeline {
                         }
                     }
                 }
+                stage('Api Gateway') {
+                    steps {
+                        script {
+                            sh """
+                            docker build -t ${DOCKER_REGISTRY}/api-gateway:latest -f api-gateway/Dockerfile .
+                            """
+                        }
+                    }
+                }
+                stage('Discovery Server') {
+                    steps {
+                        script {
+                            sh """
+                            docker build -t ${DOCKER_REGISTRY}/discovery-server:latest -f discovery-server/Dockerfile .
+                            """
+                        }
+                    }
+                }
             }
         }
 
@@ -69,6 +87,8 @@ pipeline {
                         docker push ${DOCKER_REGISTRY}/auth-service:latest
                         docker push ${DOCKER_REGISTRY}/user-service:latest
                         docker push ${DOCKER_REGISTRY}/config-server:latest
+                        docker push ${DOCKER_REGISTRY}/api-gateway:latest
+                        docker push ${DOCKER_REGISTRY}/discovery-server:latest
                         docker logout
                         """
                     }
