@@ -1,4 +1,57 @@
 services:
+  api-gateway:
+    container_name: api-gateway
+    build:
+      context: .
+      dockerfile: api-gateway/Dockerfile
+    ports:
+      - "8889:8889"
+    networks:
+      - genius-net
+    depends_on:
+      config-server:
+        condition: service_healthy
+      auth-service:
+        condition: service_started
+      user-service:
+        condition: service_started
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+      - JAVA_TOOL_OPTIONS=-javaagent:/app/opentelemetry-javaagent.jar
+        -Dotel.exporter.otlp.endpoint=otel-collector:4317
+        -Dotel.exporter.otlp.protocol=grpc
+        -Dotel.logs.exporter=none
+        -Dotel.metrics.exporter=none
+        -Dotel.resource.attributes=service.name=api-gateway
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8889/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  discovery-server:
+    container_name: discovery-server
+    build:
+      context: .
+      dockerfile: discovery-server/Dockerfile
+    ports:
+      - "8761:8761"
+    networks:
+      - genius-net
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+      - JAVA_TOOL_OPTIONS=-javaagent:/app/opentelemetry-javaagent.jar
+        -Dotel.exporter.otlp.endpoint=otel-collector:4317
+        -Dotel.exporter.otlp.protocol=grpc
+        -Dotel.logs.exporter=none
+        -Dotel.metrics.exporter=none
+        -Dotel.resource.attributes=service.name=discovery-server
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8761/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+
   config-server:
     container_name: config-server
     build:
@@ -12,14 +65,17 @@ services:
       - JAVA_TOOL_OPTIONS=-javaagent:/app/opentelemetry-javaagent.jar
         -Dotel.exporter.otlp.endpoint=otel-collector:4317
         -Dotel.exporter.otlp.protocol=grpc
+        -Dotel.logs.exporter=none
+        -Dotel.metrics.exporter=none
         -Dotel.resource.attributes=service.name=config-server
     networks:
       - genius-net
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:8888/actuator/health" ]
       interval: 10s
-      timeout: 5s
+      timeout: 30s
       retries: 5
+    restart: unless-stopped
 
   auth-service:
     container_name: auth-service
@@ -36,6 +92,8 @@ services:
       - JAVA_TOOL_OPTIONS=-javaagent:/app/opentelemetry-javaagent.jar
         -Dotel.exporter.otlp.endpoint=otel-collector:4317
         -Dotel.exporter.otlp.protocol=grpc
+        -Dotel.logs.exporter=none
+        -Dotel.metrics.exporter=none
         -Dotel.resource.attributes=service.name=auth-service
     ports:
       - "9090:9090"
@@ -57,6 +115,8 @@ services:
       - JAVA_TOOL_OPTIONS=-javaagent:/app/opentelemetry-javaagent.jar
         -Dotel.exporter.otlp.endpoint=otel-collector:4317
         -Dotel.exporter.otlp.protocol=grpc
+        -Dotel.logs.exporter=none
+        -Dotel.metrics.exporter=none
         -Dotel.resource.attributes=service.name=user-service
     ports:
       - "9091:9091"

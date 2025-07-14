@@ -19,3 +19,8 @@ spring:
           skip-ssl-validation: true
           username: "suatbayir1"
           password: ${GIT_KEY}
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://discovery-server:8761/eureka

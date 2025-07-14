@@ -1,11 +1,24 @@
 services:
+  api-gateway:
+    environment:
+      - JAVA_TOOL_OPTIONS=
+
+  discovery-server:
+    environment:
+      - JAVA_TOOL_OPTIONS=
+
+  config-server:
+    environment:
+      - JAVA_TOOL_OPTIONS=
+
   auth-service:
     build:
       context: .
       dockerfile: auth-service/Dockerfile
       target: dev
     environment:
-      - SPRING_PROFILES_ACTIVE=dev
+      - SPRING_PROFILES_ACTIVE=local
+      - JAVA_TOOL_OPTIONS=
     ports:
       - "9090:9090"
       - "5005:5005"
@@ -22,7 +35,8 @@ services:
       dockerfile: user-service/Dockerfile
       target: dev
     environment:
-      - SPRING_PROFILES_ACTIVE=dev
+      - SPRING_PROFILES_ACTIVE=local
+      - JAVA_TOOL_OPTIONS=
     ports:
       - "9091:9091"
       - "5006:5006"
