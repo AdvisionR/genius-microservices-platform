@@ -47,3 +47,20 @@ services:
       -Dspring-boot.run.profiles=dev
       -Dspring-boot.run.jvmArguments="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5006"
 
+  chat-service:
+    build:
+      context: .
+      dockerfile: chat-service/Dockerfile
+      target: dev
+    environment:
+      - SPRING_PROFILES_ACTIVE=local
+      - JAVA_TOOL_OPTIONS=
+    ports:
+      - "9093:9093"
+      - "5008:5008"
+    volumes:
+      - ./chat-service:/app/chat-service
+    command: >
+      ./mvnw spring-boot:run
+      -Dspring-boot.run.profiles=dev
+      -Dspring-boot.run.jvmArguments="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5008"

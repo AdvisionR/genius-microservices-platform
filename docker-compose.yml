@@ -123,6 +123,29 @@ services:
     networks:
       - genius-net
 
+  chat-service:
+    container_name: chat-service
+    build:
+      context: .
+      dockerfile: chat-service/Dockerfile
+    depends_on:
+      config-server:
+        condition: service_healthy
+      postgres-chat:
+        condition: service_started
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+      - JAVA_TOOL_OPTIONS=-javaagent:/app/opentelemetry-javaagent.jar
+        -Dotel.exporter.otlp.endpoint=otel-collector:4317
+        -Dotel.exporter.otlp.protocol=grpc
+        -Dotel.logs.exporter=none
+        -Dotel.metrics.exporter=none
+        -Dotel.resource.attributes=service.name=chat-service
+    ports:
+      - "9093:9093"
+    networks:
+      - genius-net
+
   postgres-auth:
     image: postgres:16-alpine
     container_name: postgres-auth
@@ -148,6 +171,20 @@ services:
       - "15433:5432"
     volumes:
       - postgres-user-data:/var/lib/postgresql/data
+    networks:
+      - genius-net
+
+  postgres-chat:
+    image: postgres:16-alpine
+    container_name: postgres-chat
+    environment:
+      POSTGRES_DB: chat
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "15434:5432"
+    volumes:
+      - postgres-chat-data:/var/lib/postgresql/data
     networks:
       - genius-net
 
@@ -201,4 +238,5 @@ networks:
 volumes:
   postgres-auth-data:
   postgres-user-data:
+  postgres-chat-data:
   grafana-data:

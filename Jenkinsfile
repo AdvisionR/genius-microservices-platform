@@ -53,6 +53,15 @@ pipeline {
                         }
                     }
                 }
+                stage('Chat Service') {
+                    steps {
+                        script {
+                            sh """
+                            docker build -t ${DOCKER_REGISTRY}/chat-service:latest -f chat-service/Dockerfile .
+                            """
+                        }
+                    }
+                }
                 stage('Api Gateway') {
                     steps {
                         script {
@@ -86,6 +95,7 @@ pipeline {
                         echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
                         docker push ${DOCKER_REGISTRY}/auth-service:latest
                         docker push ${DOCKER_REGISTRY}/user-service:latest
+                        docker push ${DOCKER_REGISTRY}/chat-service:latest
                         docker push ${DOCKER_REGISTRY}/config-server:latest
                         docker push ${DOCKER_REGISTRY}/api-gateway:latest
                         docker push ${DOCKER_REGISTRY}/discovery-server:latest
