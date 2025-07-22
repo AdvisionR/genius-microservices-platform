@@ -33,13 +33,13 @@ public class ChatController {
                 .body(new ApiResponse<>(CHAT_CREATED_SUCCESSFULLY, response));
     }
 
-    @GetMapping(GET_ALL)
+    @PostMapping(GET_ALL)
     public ResponseEntity<ApiResponse<List<ChatDTO>>> getAll(@RequestBody UserUuidRequestDTO request) {
         List<ChatDTO> chatList = getChatUseCase.getAll(request.userUuid());
         return ResponseEntity.ok(new ApiResponse<>(FETCH_CHATS, chatList));
     }
 
-    @GetMapping(GET_CHAT)
+    @PostMapping(GET_CHAT)
     public ResponseEntity<ApiResponse<ChatDetailDTO>> get(@PathVariable("chatUuid") UUID chatUuid) {
         ChatDetailDTO chat = getChatUseCase.get(chatUuid);
         return ResponseEntity.ok(new ApiResponse<>(FETCH_CHAT, chat));
